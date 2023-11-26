@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ricardo
+      MONGO_INITDB_ROOT_PASSWORD: testpass
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    networks:
+      - testapi-net
+
+  testapi:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env.docker
+    container_name: testapi
+    volumes:
+      - .:/app
+    image: test-api
+    restart: always
+    mem_limit: 512m
+    ports:
+      - '3050:3000'
+    depends_on:
+      - mongo
+    command: ['npm', 'run', 'start:dev']
+    links:
+      - mongo
+    networks:
+      - testapi-net
+
+networks:
+  testapi-net:
+    driver: bridge
