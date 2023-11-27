@@ -15,6 +15,7 @@ export class AuthService {
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
     if (user && user.password === pass) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
       return result;
     }
@@ -25,11 +26,12 @@ export class AuthService {
   async login(loginBody: any) {
     //Add expiration time to the response
     const expiresInSeconds = Number(
-      this.configService.get('jwtDateExpirationTime'),
+      await this.configService.get('jwtDateExpirationTime'),
     );
     const accessTokenExpiresAt = new Date(
       new Date().getTime() + expiresInSeconds * 1000,
     );
+
     //This is added to the token to use it in the @TokenData() decorator
     const user = await this.usersService.findOne(loginBody.username);
     const payload = {

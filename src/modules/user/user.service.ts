@@ -25,4 +25,8 @@ export class UserService {
   async findOne(username: string): Promise<any> {
     return this.users.find((user) => user.username === username);
   }
+
+  async register(user: any): Promise<any> {
+    return this.users.push(user);
+  }
 }
