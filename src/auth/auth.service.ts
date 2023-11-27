@@ -34,9 +34,11 @@ export class AuthService {
 
     //This is added to the token to use it in the @TokenData() decorator
     const user = await this.usersService.findOne(loginBody.username);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...userWithoutPassword } = user;
     const payload = {
-      user,
-      extraloginData: 'added manually in auth.service-data',
+      ...userWithoutPassword,
+      loginData: 'tokenData for login',
     };
     return {
       accessToken: {
