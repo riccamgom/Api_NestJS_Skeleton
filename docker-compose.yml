@@ -20,6 +20,7 @@ services:
     container_name: testapi
     volumes:
       - .:/app
+      - /app/node_modules
     image: test-api
     restart: always
     mem_limit: 512m
