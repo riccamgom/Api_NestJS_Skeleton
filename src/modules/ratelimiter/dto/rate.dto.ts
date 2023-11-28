@@ -6,8 +6,8 @@ export class RateDto {
   ip: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  route: number;
+  @IsString()
+  route: string;
 
   @IsNotEmpty()
   @IsNumber()

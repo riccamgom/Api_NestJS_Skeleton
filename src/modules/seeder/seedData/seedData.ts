@@ -1,4 +1,11 @@
-export const customers = [
+import { CryptoService } from 'src/common/crypto.service';
+import { CustomerDto } from 'src/modules/customer/dto/customer.dto';
+import { RateDto } from 'src/modules/ratelimiter/dto/rate.dto';
+import { CreateUserDto } from 'src/modules/user/dto/createUser.dto';
+
+const cryptoService = new CryptoService();
+
+export const customers: CustomerDto[] = [
   {
     name: 'John Doe',
     email: 'john@example.com',
@@ -19,7 +26,7 @@ export const customers = [
   },
 ];
 
-export const rateLimiters = [
+export const rateLimiters: RateDto[] = [
   {
     ip: '192.168.1.1',
     route: '/api/resource',
@@ -37,20 +44,20 @@ export const rateLimiters = [
   },
 ];
 
-export const users = [
+export const users: CreateUserDto[] = [
   {
     username: 'user1',
-    password: 'password1',
+    password: cryptoService.encrypt('password1'),
     role: 'admin',
   },
   {
     username: 'user2',
-    password: 'password2',
+    password: cryptoService.encrypt('password2'),
     role: 'user',
   },
   {
     username: 'user3',
-    password: 'password3',
+    password: cryptoService.encrypt('password3'),
     role: 'user',
   },
 ];

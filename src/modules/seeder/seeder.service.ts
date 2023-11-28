@@ -24,5 +24,7 @@ export class SeederService {
     await this.customerModel.insertMany(customers);
     await this.rateLimiterModel.insertMany(rateLimiters);
     await this.userModel.insertMany(users);
+
+    return 'Data seeded successfully!';
   }
 }
