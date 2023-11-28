@@ -2,12 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schema/user.schema';
+import { CreateUserDto } from './dto/createUser.dto';
+import { CryptoService } from 'src/common/crypto.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private cryptoService: CryptoService,
+  ) {}
 
-  async create(user: any): Promise<User> {
+  async create(user: CreateUserDto): Promise<User> {
+    user.password = this.cryptoService.encrypt(user.password);
     const createdUser = new this.userModel(user);
     return createdUser.save();
   }
@@ -16,35 +22,16 @@ export class UserService {
     return this.userModel.find().exec();
   }
 
-  async findOne(username: string): Promise<User> {
-    return this.userModel.findOne({ username: username }).exec();
-  }
-
-  //Mock data
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'luis',
-      password: 'pass1',
-      role: 'admin',
-      company: 'company1',
-      team: 'team1',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'pass2',
-      role: 'manager',
-      company: 'company2',
-      team: 'team2',
-    },
-  ];
-
-  /*async findOne(username: string): Promise<any> {
-    return this.users.find((user) => user.username === username);
-  }*/
-
-  async register(user: any): Promise<any> {
-    return this.users.push(user);
+  async findOne(username: string): Promise<any> {
+    const user = await this.userModel.findOne({ username: username }).exec();
+    if (!user) {
+      return null;
+    }
+    const userReturn = {
+      username: user.username,
+      password: user.password,
+      role: user.role,
+    };
+    return userReturn;
   }
 }

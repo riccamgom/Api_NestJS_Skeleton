@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from 'src/modules/user/user.service';
+import { CryptoService } from 'src/common/crypto.service';
 
 @Injectable()
 export class AuthService {
@@ -9,12 +10,13 @@ export class AuthService {
     private usersService: UserService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private cryptoService: CryptoService,
   ) {}
 
   //This method is called by the local strategy to check if the user exists and the password is correct
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
-    if (user && user.password === pass) {
+    if (user && this.cryptoService.decrypt(user.password) === pass) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
       return result;
