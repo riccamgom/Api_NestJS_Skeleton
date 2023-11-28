@@ -1,7 +1,7 @@
 import { Injectable, Logger, NestMiddleware, Scope } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
-//Definimos el scope del middleware como DEFAULT, para que la instancia este atada al ciclo de vida de la aplicacion
+//Scope as DEFAULT to tie instance to app lifecycle
 @Injectable({ scope: Scope.DEFAULT })
 export class LoadMiddleware implements NestMiddleware {
   private readonly logger = new Logger(LoadMiddleware.name);
