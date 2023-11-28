@@ -10,7 +10,8 @@ import { CustomerModule } from './modules/customer/customer.module';
 //Auth and Security
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-//import { AuthModule } from './auth/auth.module';
+//Load Middleware
+import { LoadMiddleware } from 'src/middleware/load.middleware';
 // Default files
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -41,4 +42,9 @@ import { AppService } from './app.service';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  // Load custom middleware for all routes
+  configure(consumer) {
+    consumer.apply(LoadMiddleware).forRoutes('*');
+  }
+}
