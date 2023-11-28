@@ -15,9 +15,12 @@ import { LoadMiddleware } from 'src/middleware/load.middleware';
 // Default files
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { SeederModule } from './modules/seeder/seeder.module';
+import { RatelimiterModule } from './modules/ratelimiter/ratelimiter.module';
 
 @Module({
   imports: [
+    RatelimiterModule,
     ConfigModule.forRoot({
       isGlobal: true, //Config module is available everywhere
       cache: true,
@@ -32,6 +35,7 @@ import { AppService } from './app.service';
     }),
     UserModule,
     CustomerModule,
+    SeederModule,
   ],
   controllers: [AppController],
   providers: [
