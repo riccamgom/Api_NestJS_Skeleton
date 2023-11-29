@@ -12,13 +12,13 @@ export class RatelimiterService {
     @InjectModel(TokenCount.name) private tokenCountModel: Model<TokenCount>,
   ) {}
 
+  async findAll() {
+    return this.ratelimiterModel.find().exec();
+  }
+
   async addRouteWeight(routeWeight: RateDto): Promise<RateLimiter> {
     const createdLimit = new this.ratelimiterModel(routeWeight);
     return createdLimit.save();
-  }
-
-  async findAll() {
-    return this.ratelimiterModel.find().exec();
   }
 
   async getRouteWeight(route: string) {
@@ -29,15 +29,31 @@ export class RatelimiterService {
   }
 
   async addIpCount(ip: string, weight: number) {
+    if (!ip || weight <= 0) {
+      throw new Error('Invalid IP or weight');
+    }
+
+    const timeAgo = new Date(Date.now() - 60000); // 1 minute ago (60000ms)
     try {
-      if (!ip || weight <= 0) {
-        throw new Error('Invalid IP or weight');
-      }
       const updatedIpCount = await this.ipCountModel.findOneAndUpdate(
         { ip },
-        { $inc: { count: weight } },
+        [
+          {
+            $set: {
+              count: {
+                $cond: [
+                  { $gt: ['$updatedAt', timeAgo] },
+                  { $add: ['$count', weight] },
+                  weight,
+                ],
+              },
+              updatedAt: new Date(),
+            },
+          },
+        ],
         { new: true, upsert: true },
       );
+
       return updatedIpCount.count;
     } catch (error) {
       console.error('IpCount Error:', error);
@@ -46,15 +62,31 @@ export class RatelimiterService {
   }
 
   async addTokenCount(token: string, weight: number) {
+    if (!token || weight <= 0) {
+      throw new Error('Invalid token or weight');
+    }
+
+    const timeAgo = new Date(Date.now() - 120000); // 2 minutes ago (120000ms)
     try {
-      if (!token || weight <= 0) {
-        throw new Error('Invalid token or weight');
-      }
       const updatedTokenCount = await this.tokenCountModel.findOneAndUpdate(
         { token },
-        { $inc: { count: weight } },
+        [
+          {
+            $set: {
+              count: {
+                $cond: [
+                  { $gt: ['$updatedAt', timeAgo] },
+                  { $add: ['$count', weight] },
+                  weight,
+                ],
+              },
+              updatedAt: new Date(),
+            },
+          },
+        ],
         { new: true, upsert: true },
       );
+
       return updatedTokenCount.count;
     } catch (error) {
       console.error('TokenCount Error:', error);

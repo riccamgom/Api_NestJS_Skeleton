@@ -14,7 +14,7 @@ export class RateLimiter extends Document {
 export const RateLimiterSchema = SchemaFactory.createForClass(RateLimiter);
 
 //Rate limiter for ip addresses
-@Schema()
+@Schema({ timestamps: true })
 export class IpCount extends Document {
   @Prop({ required: true })
   ip: string;
@@ -26,7 +26,7 @@ export class IpCount extends Document {
 export const IpCountSchema = SchemaFactory.createForClass(IpCount);
 
 //Rate limiter for tokens (JWT)
-@Schema()
+@Schema({ timestamps: true })
 export class TokenCount extends Document {
   @Prop({ required: true })
   token: string;
