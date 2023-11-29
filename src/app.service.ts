@@ -22,7 +22,7 @@ export class AppService {
         <p id="greetingText"></p>
         <script>
           document.getElementById('fetchButton').addEventListener('click', () => {
-            fetch('http://localhost:3000/seeder/populate')
+            fetch('http://localhost:3050/seeder/populate')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('greetingText').textContent = data;

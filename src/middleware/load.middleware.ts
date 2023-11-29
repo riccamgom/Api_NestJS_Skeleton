@@ -50,9 +50,13 @@ export class LoadMiddleware implements NestMiddleware {
 
     // If the limit is exceeded, send a 429 status code
     if (tokenCount > this.tokenLimit) {
-      res.status(429).send('Requests by token limit exceeded');
+      res
+        .status(429)
+        .send('Requests by token limit exceeded. Please wait 2 minutes');
     } else if (ipCount > this.ipLimit) {
-      res.status(429).send('Requests by ip limit exceeded');
+      res
+        .status(429)
+        .send('Requests by ip limit exceeded. Please wait 1 minutes');
     } else {
       next();
     }
