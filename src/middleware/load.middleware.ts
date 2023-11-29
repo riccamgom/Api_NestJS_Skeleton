@@ -1,33 +1,59 @@
-import {
-  Inject,
-  Injectable,
-  NestMiddleware,
-  Scope,
-  forwardRef,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware, Scope } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-//import { RatelimiterService } from 'src/modules/ratelimiter/ratelimiter.service';
+import { ConfigService } from '@nestjs/config';
+import { RatelimiterService } from 'src/modules/ratelimiter/ratelimiter.service';
 
 //Scope as DEFAULT to tie instance to app lifecycle
 @Injectable({ scope: Scope.DEFAULT })
 export class LoadMiddleware implements NestMiddleware {
+  private readonly tokenLimit: number;
+  private readonly ipLimit: number;
   private readonly defaultLimit = 100;
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly rateLimiterService: RatelimiterService,
+  ) {
+    this.tokenLimit =
+      this.configService.get<number>('limit.token') || this.defaultLimit;
+    this.ipLimit =
+      this.configService.get<number>('limit.ip') || this.defaultLimit;
+  }
 
   async use(req: Request, res: Response, next: NextFunction) {
     const ip = req.ip;
+    const token = req.headers.authorization;
     const route = req.originalUrl;
+    let routeWeight = 1; //Default weight
+    let ipCount = 0;
+    let tokenCount = 0;
 
-    // Database query to get the limit for the route or default
-    const limit = 10; //this.routeConfig[route] || this.defaultLimit;
-    // Database query to get the current request count for the route
-    //const test = await this.rateLimiterService.findAll();
-    const count = 5; // await this.accessService.getAndUpdateRequestCount(ip, route);
+    // Get route weight for rate limiting
+    if (route) {
+      const routeWeightRes: number =
+        await this.rateLimiterService.getRouteWeight(route);
+      if (routeWeightRes) {
+        routeWeight = routeWeightRes;
+      }
+    }
 
-    if (count > limit) {
-      // If the limit is exceeded, send a 429 status code
-      res.status(429).send('Too Many Requests');
+    // Get IP and Token counts
+    const [ipCountResult, tokenCountResult] = await Promise.all([
+      ip
+        ? this.rateLimiterService.addIpCount(ip, routeWeight)
+        : Promise.resolve(0),
+      token
+        ? this.rateLimiterService.addTokenCount(token, routeWeight)
+        : Promise.resolve(0),
+    ]);
+    ipCount += ipCountResult;
+    tokenCount += tokenCountResult;
+
+    // If the limit is exceeded, send a 429 status code
+    if (tokenCount > this.tokenLimit) {
+      res.status(429).send('Requests by token limit exceeded');
+    } else if (ipCount > this.ipLimit) {
+      res.status(429).send('Requests by ip limit exceeded');
     } else {
-      // Otherwise, continue
       next();
     }
   }

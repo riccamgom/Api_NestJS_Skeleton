@@ -3,13 +3,22 @@ import { RatelimiterService } from './ratelimiter.service';
 import { RatelimiterController } from './ratelimiter.controller';
 //MongoDB
 import { MongooseModule } from '@nestjs/mongoose';
-import { RateLimiter, RateLimiterSchema } from './schema/ratelimiter.schema';
+import {
+  IpCount,
+  IpCountSchema,
+  RateLimiter,
+  RateLimiterSchema,
+  TokenCount,
+  TokenCountSchema,
+} from './schema/ratelimiter.schema';
 
 @Global()
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: RateLimiter.name, schema: RateLimiterSchema },
+      { name: IpCount.name, schema: IpCountSchema },
+      { name: TokenCount.name, schema: TokenCountSchema },
     ]),
   ],
   providers: [RatelimiterService],
