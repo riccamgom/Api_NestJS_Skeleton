@@ -1,0 +1,335 @@
+{
+	"info": {
+		"_postman_id": "c7f73351-cc0a-4006-91e8-79a5c31560a5",
+		"name": "ApiTest",
+		"description": "Endpoints for the Api Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31438580"
+	},
+	"item": [
+		{
+			"name": "01.FIRST STEP",
+			"item": [
+				{
+					"name": "Seed Test Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/seeder/populate",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"seeder",
+								"populate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02.LOGIN-USERS-TOKEN",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user1\",\r\n    \"password\": \"password1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/user/login",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Token Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6ImFkbWluIiwibG9naW5EYXRhIjoidG9rZW5EYXRhIGZvciBsb2dpbiIsImlhdCI6MTcwMTI4NDA0MSwiZXhwIjoxNzAxMjg5MDQxfQ.KNC1PrxX6JJ6nuNsYvaRtH9L3JNV6zqrZWIE1yBNbvNs26O2AlcUDWAFyr2cOr4nd-k4cNiDQlSBl4eiI0iAuA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/user/profile",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6ImFkbWluIiwibG9naW5EYXRhIjoidG9rZW5EYXRhIGZvciBsb2dpbiIsImlhdCI6MTcwMTI4NDA0MSwiZXhwIjoxNzAxMjg5MDQxfQ.KNC1PrxX6JJ6nuNsYvaRtH9L3JNV6zqrZWIE1yBNbvNs26O2AlcUDWAFyr2cOr4nd-k4cNiDQlSBl4eiI0iAuA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user33\",\r\n    \"password\": \"password33\",\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/user/register",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03. CUSTOMERS",
+			"item": [
+				{
+					"name": "Create Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6ImFkbWluIiwibG9naW5EYXRhIjoidG9rZW5EYXRhIGZvciBsb2dpbiIsImlhdCI6MTcwMTI4NDA0MSwiZXhwIjoxNzAxMjg5MDQxfQ.KNC1PrxX6JJ6nuNsYvaRtH9L3JNV6zqrZWIE1yBNbvNs26O2AlcUDWAFyr2cOr4nd-k4cNiDQlSBl4eiI0iAuA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"name\": \"New Customer\",\r\n    \"email\": \"jane@example.com\",\r\n    \"phone\": \"+34666111222\",\r\n    \"address\": \"Test Address\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/customer/create",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"customer",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6ImFkbWluIiwibG9naW5EYXRhIjoidG9rZW5EYXRhIGZvciBsb2dpbiIsImlhdCI6MTcwMTI4NDA0MSwiZXhwIjoxNzAxMjg5MDQxfQ.KNC1PrxX6JJ6nuNsYvaRtH9L3JNV6zqrZWIE1yBNbvNs26O2AlcUDWAFyr2cOr4nd-k4cNiDQlSBl4eiI0iAuA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"name\": \"Jane\",\r\n    \"email\": \"jane@example.com\",\r\n    \"phone\": \"0987654321\",\r\n    \"address\": \"New Address\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/customer/update",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"customer",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Customer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6ImFkbWluIiwibG9naW5EYXRhIjoidG9rZW5EYXRhIGZvciBsb2dpbiIsImlhdCI6MTcwMTI4NDA0MSwiZXhwIjoxNzAxMjg5MDQxfQ.KNC1PrxX6JJ6nuNsYvaRtH9L3JNV6zqrZWIE1yBNbvNs26O2AlcUDWAFyr2cOr4nd-k4cNiDQlSBl4eiI0iAuA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/customer/delete/Alex",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"customer",
+								"delete",
+								"Alex"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04. RATES-LIMITS",
+			"item": [
+				{
+					"name": "Get Routes Weight",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6ImFkbWluIiwibG9naW5EYXRhIjoidG9rZW5EYXRhIGZvciBsb2dpbiIsImlhdCI6MTcwMTIxNDgxMSwiZXhwIjoxNzAxMjE5ODExfQ.rjbQqLu48jzr0euPUSoeDF8FWnVtoFQtNuFU9MdDNOaCFc_xfQ1M7jrvDB4GgWnM4CveKQc0Kh3NXuM9q0O2Dg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/ratelimiter/routesweight",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"ratelimiter",
+								"routesweight"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Route Weight",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwicm9sZSI6ImFkbWluIiwibG9naW5EYXRhIjoidG9rZW5EYXRhIGZvciBsb2dpbiIsImlhdCI6MTcwMTI4NDA0MSwiZXhwIjoxNzAxMjg5MDQxfQ.KNC1PrxX6JJ6nuNsYvaRtH9L3JNV6zqrZWIE1yBNbvNs26O2AlcUDWAFyr2cOr4nd-k4cNiDQlSBl4eiI0iAuA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"route\":\"/route/test\",\r\n    \"weight\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/ratelimiter/addrouteweight",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"ratelimiter",
+								"addrouteweight"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localhost",
+			"value": "localhost:3050"
+		}
+	]
+}
