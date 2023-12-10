@@ -9,6 +9,13 @@
 
 Api Test
 
+## Using Docker
+```bash
+$ Git Clone
+$ Run Docker: docker compose up
+
+$ Open in a browser window: http://localhost:3050/ and push "seed" button
+```
 ## Installation
 
 ```bash
