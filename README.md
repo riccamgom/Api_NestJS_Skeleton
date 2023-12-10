@@ -7,7 +7,7 @@
 
 ## Description
 
-Api Test
+Skeleton for Api in NestJs with jwt token, mongodb and custom middleware
 
 ## Using Docker
 ```bash
